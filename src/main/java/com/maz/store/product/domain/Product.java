@@ -1,6 +1,7 @@
 package com.maz.store.product.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Document(collection = "product")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Data
 public class Product {
 
     @Id
@@ -25,7 +26,7 @@ public class Product {
 
     private Category category;
 
-    private BigDecimal price;
+    private BigDecimal cost;
 
     @CreatedDate
     private Date createDate;
