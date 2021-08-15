@@ -1,9 +1,6 @@
 package com.maz.store.product.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,11 +13,14 @@ import java.util.UUID;
 @Document(collection = "product")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class Product {
 
     @Id
     private UUID id;
+
+    private String upc;
 
     private String label;
 
@@ -33,5 +33,6 @@ public class Product {
 
     @LastModifiedDate
     private Date lastModifiedDate;
+
 
 }

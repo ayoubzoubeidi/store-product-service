@@ -5,8 +5,10 @@ import com.maz.store.product.domain.Product;
 import com.maz.store.product.repositories.ProductRepository;
 import com.maz.store.product.web.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +38,18 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Product Not Found With Id: " + productId));
 
         return productMapper.productToProductDto(product);
+
+    }
+
+    @Override
+    public List<ProductDto> getAllProducts(Pageable pageable) {
+
+        return  productRepository.findAll()
+                .take(pageable.getPageSize())
+                .skip(pageable.getOffset())
+                .map(productMapper::productToProductDto)
+                .collectList().block();
+
     }
 
     @Override

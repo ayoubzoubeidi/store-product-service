@@ -1,22 +1,24 @@
 package com.maz.store.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class ProductDto {
 
     private UUID id;
 
+    private String upc;
+
     private String label;
+
+    private Integer quantityOnHand;
 
     private String category;
 
