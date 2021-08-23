@@ -1,6 +1,6 @@
 package com.maz.store.product.services;
 
-import com.maz.store.model.ProductDto;
+import com.maz.store.model.product.ProductDto;
 import com.maz.store.product.domain.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

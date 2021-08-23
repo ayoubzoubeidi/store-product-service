@@ -1,4 +1,4 @@
-package com.maz.store.model;
+package com.maz.store.model.product;
 
 import lombok.*;
 
@@ -23,4 +23,5 @@ public class ProductDto {
     private String category;
 
     private Date createDate;
+
 }
