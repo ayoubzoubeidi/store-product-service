@@ -30,14 +30,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto getProduct(UUID productId) {
+    public ProductDto getProduct(UUID productId, Boolean getQOH) {
 
         Optional<Product> optionalProduct = productRepository.findById(productId).blockOptional();
 
         Product product = optionalProduct
                 .orElseThrow(() -> new RuntimeException("Product Not Found With Id: " + productId));
 
-        return productMapper.productToProductDto(product);
+        return getQOH ? productMapper.productToProductDto(product) : productMapper.productToProductDtoWithoutQOH(product);
 
     }
 

@@ -12,7 +12,7 @@ public interface ProductService {
 
     ProductDto saveProduct(ProductDto productDto);
 
-    ProductDto getProduct(UUID productId);
+    ProductDto getProduct(UUID productId, Boolean getQOH);
 
     List<ProductDto> getAllProducts(Pageable pageable);
 
