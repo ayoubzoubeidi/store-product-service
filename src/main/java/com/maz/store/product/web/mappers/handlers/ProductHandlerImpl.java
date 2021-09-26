@@ -39,13 +39,13 @@ public class ProductHandlerImpl implements ProductHandler {
         if (request.queryParams().getFirst("page") != null) {
             page = Integer.parseInt(Objects.requireNonNull(request.queryParams().getFirst("page")));
         } else {
-            page = 0;
+            page = 1;
         }
 
         if (request.queryParams().getFirst("size") != null) {
             size = Integer.parseInt(Objects.requireNonNull(request.queryParams().getFirst("size")));
         } else {
-            size = 0;
+            size = 20;
         }
 
         Pageable pageable =
