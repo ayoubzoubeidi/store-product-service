@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@Profile("!discovery")
 @ConfigurationProperties(prefix = "store.rest", ignoreInvalidFields = true)
 @Slf4j
 public class InventoryServiceRestTemplateImpl implements InventoryService {

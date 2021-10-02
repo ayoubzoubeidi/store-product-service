@@ -1,4 +1,4 @@
-package com.maz.store.product.web.mappers.handlers;
+package com.maz.store.product.web.handlers;
 
 import com.maz.store.model.product.ProductDto;
 import com.maz.store.product.services.ProductService;

@@ -1,6 +1,6 @@
-package com.maz.store.product.web.mappers.routers;
+package com.maz.store.product.web.routers;
 
-import com.maz.store.product.web.mappers.handlers.ProductHandler;
+import com.maz.store.product.web.handlers.ProductHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

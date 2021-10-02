@@ -27,8 +27,11 @@ class InventoryApiClientTest {
         // mock data on inventory server, upc = 1234 QOH = 50
         Product createdProduct = createProduct();
 
+        System.err.println(createdProduct);
+
         ProductDto dto = productMapper.productToProductDto(createdProduct);
 
+        System.err.println(dto.getQuantityOnHand());
         assertEquals(50, dto.getQuantityOnHand());
 
     }

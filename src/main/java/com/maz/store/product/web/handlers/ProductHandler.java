@@ -1,4 +1,4 @@
-package com.maz.store.product.web.mappers.handlers;
+package com.maz.store.product.web.handlers;
 
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
