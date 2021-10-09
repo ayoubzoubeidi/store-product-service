@@ -2,10 +2,12 @@ package com.maz.store.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import reactivefeign.spring.config.EnableReactiveFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients
+@EnableReactiveFeignClients
+@EnableEurekaClient
 public class StoreProductServiceApplication {
 
     public static void main(String[] args) {
