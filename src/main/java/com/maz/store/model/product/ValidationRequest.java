@@ -1,12 +1,14 @@
 package com.maz.store.model.product;
 
 import com.maz.store.model.order.OrderDto;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Builder
 public class ValidationRequest implements Serializable {
 

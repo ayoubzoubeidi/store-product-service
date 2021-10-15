@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,14 +25,18 @@ public class ValidationListener {
 
     @JmsListener(destination = JmsConfig.VALIDATE_ORDER_QUEUE)
     public void validationListener(ValidationRequest request) {
+        AtomicBoolean isValid = new AtomicBoolean(true);
+        request.getOrder().getOrderLines().forEach(
+                (orderLineDto) -> {
+                    if (!productRepository.existsByUpc(orderLineDto.getUpc()).block()) {
+                        isValid.set(false);
+                    }
+                }
+        );
 
-        Boolean isValid = productRepository.existsAllByUpc(request.getOrder().getOrderLines()
-                .stream()
-                .map(OrderLineDto::getUpc)
-                .collect(Collectors.toList()));
-
+        log.info("Sending validation response ");
         jmsTemplate.convertAndSend(JmsConfig.VALIDATION_RESPONSE_QUEUE,
-                ValidationResponse.builder().orderId(request.getOrder().getId()).isValid(isValid).build());
+                ValidationResponse.builder().orderId(request.getOrder().getId()).isValid(isValid.get()).build());
 
     }
 
