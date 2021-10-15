@@ -2,7 +2,6 @@ package com.maz.store.product.services.inventory.resttemplate;
 
 import com.maz.store.product.services.inventory.InventoryService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Profile;

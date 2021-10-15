@@ -2,15 +2,10 @@ package com.maz.store.product.services.inventory.feign;
 
 import com.maz.store.product.services.inventory.InventoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import reactivefeign.cloud2.CloudReactiveFeign;
-import reactivefeign.webclient.WebReactiveFeign;
 
 import java.util.UUID;
-
-import static com.maz.store.product.config.RestTemplateConfig.INVENTORY_URL;
 
 @Service
 @RequiredArgsConstructor

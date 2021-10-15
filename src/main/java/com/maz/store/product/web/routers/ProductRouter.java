@@ -21,16 +21,16 @@ public class ProductRouter {
     @Bean
     public RouterFunction<ServerResponse> routerFunction(ProductHandler handler) {
         return RouterFunctions.route()
-                .path("/product", builder -> builder
+                .path("/api/v1/products", builder -> builder
 
-                        .GET(accept(MediaType.APPLICATION_JSON), handler :: getProductPage))
+                        .GET(accept(MediaType.APPLICATION_JSON), handler::getProductPage))
 
-                        .GET("/{productId}",
-                                accept(MediaType.APPLICATION_JSON), handler :: getProduct)
+                .GET("/{productId}",
+                        accept(MediaType.APPLICATION_JSON), handler::getProduct)
 
-                        .POST(accept(MediaType.APPLICATION_JSON), handler :: saveProduct)
+                .POST(accept(MediaType.APPLICATION_JSON), handler::saveProduct)
 
-                        .PUT(accept(MediaType.APPLICATION_JSON), handler :: updateProduct)
+                .PUT(accept(MediaType.APPLICATION_JSON), handler::updateProduct)
                 .build();
     }
 
