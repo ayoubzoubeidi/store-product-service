@@ -2,20 +2,24 @@ package com.maz.store.product.services;
 
 import com.maz.store.model.product.ProductDto;
 import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
 
-    ProductDto saveProduct(ProductDto productDto);
+    Mono<UUID> saveProduct(Mono<ProductDto> productDto);
 
-    ProductDto getProduct(UUID productId, Boolean getQOH);
+    Mono<ProductDto> getProduct(UUID productId, Boolean getQOH);
 
-    List<ProductDto> getAllProducts(Pageable pageable);
+    Flux<ProductDto> getAllProducts(Pageable pageable);
 
-    ProductDto updateProduct(ProductDto productDto);
+    Mono<Void> updateProduct(Mono<ProductDto> productDto);
 
-    void deleteProduct(UUID productIt);
+    Mono<UUID> validateInventory(String upc);
+
+    Mono<Void> deleteProduct(UUID productIt);
 
 }

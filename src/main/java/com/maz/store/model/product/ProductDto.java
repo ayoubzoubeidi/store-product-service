@@ -2,6 +2,7 @@ package com.maz.store.model.product;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,6 +20,8 @@ public class ProductDto {
     private String label;
 
     private Integer quantityOnHand;
+
+    private BigDecimal cost;
 
     private String category;
 

@@ -5,7 +5,7 @@ import com.maz.store.product.domain.Product;
 import com.maz.store.product.services.inventory.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class ProductMapperDecorator implements ProductMapper{
+public abstract class ProductMapperDecorator implements ProductMapper {
 
     private ProductMapper productMapper;
     private InventoryService inventoryService;

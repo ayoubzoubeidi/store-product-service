@@ -10,5 +10,6 @@ import java.util.UUID;
 public interface ProductRepository extends ReactiveMongoRepository<Product, UUID> {
 
     Mono<Boolean> existsByUpc(String upc);
+    Mono<Product> findByUpc(String upc);
 
 }

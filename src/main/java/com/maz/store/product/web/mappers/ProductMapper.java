@@ -14,5 +14,4 @@ public interface ProductMapper {
     ProductDto productToProductDtoWithoutQOH(Product product);
 
     Product productDtoToProduct(ProductDto productDto);
-
 }

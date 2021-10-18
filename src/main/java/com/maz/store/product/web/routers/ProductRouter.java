@@ -16,21 +16,27 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 @Configuration
 public class ProductRouter {
 
+    public static String BASE_URL = "/api/v1/products";
+
     private final ProductHandler productHandler;
 
+
     @Bean
-    public RouterFunction<ServerResponse> routerFunction(ProductHandler handler) {
+    public RouterFunction<ServerResponse> routerFunction() {
         return RouterFunctions.route()
-                .path("/api/v1/products", builder -> builder
 
-                        .GET(accept(MediaType.APPLICATION_JSON), handler::getProductPage))
+                .GET(BASE_URL, productHandler::getProductPage)
 
-                .GET("/{productId}",
-                        accept(MediaType.APPLICATION_JSON), handler::getProduct)
+                .GET(BASE_URL + "/{productId}", productHandler::getProduct)
 
-                .POST(accept(MediaType.APPLICATION_JSON), handler::saveProduct)
+                .GET(BASE_URL + "/{upc}/validate", productHandler::validateInventory)
 
-                .PUT(accept(MediaType.APPLICATION_JSON), handler::updateProduct)
+                .POST(BASE_URL, accept(MediaType.APPLICATION_JSON), productHandler::saveProduct)
+
+                .PUT(BASE_URL, accept(MediaType.APPLICATION_JSON), productHandler::updateProduct)
+
+                .DELETE(BASE_URL + "/{productId}", productHandler::deleteProduct)
+
                 .build();
     }
 

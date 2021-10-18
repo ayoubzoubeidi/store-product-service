@@ -6,11 +6,15 @@ import reactor.core.publisher.Mono;
 
 public interface ProductHandler {
 
-    public Mono<ServerResponse> getProduct(ServerRequest request);
+    Mono<ServerResponse> getProduct(ServerRequest request);
 
-    public Mono<ServerResponse> getProductPage(ServerRequest serverRequest);
+    Mono<ServerResponse> getProductPage(ServerRequest serverRequest);
 
-    public Mono<ServerResponse> saveProduct(ServerRequest request);
+    Mono<ServerResponse> saveProduct(ServerRequest request);
 
-    public Mono<ServerResponse> updateProduct(ServerRequest request);
+    Mono<ServerResponse> updateProduct(ServerRequest request);
+
+    Mono<ServerResponse> validateInventory(ServerRequest serverRequest);
+
+    Mono<ServerResponse> deleteProduct(ServerRequest request);
 }

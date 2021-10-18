@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
+
 @RequiredArgsConstructor
 
 @Component
@@ -32,7 +34,6 @@ public class ProductHandlerImpl implements ProductHandler {
 
     @Override
     public Mono<ServerResponse> getProductPage(ServerRequest request) {
-
         Integer page;
         Integer size;
 
@@ -50,22 +51,34 @@ public class ProductHandlerImpl implements ProductHandler {
 
         Pageable pageable =
                 PageRequest.of(page, size);
-
-        return ServerResponse.ok().body(productService.getAllProducts(pageable), List.class);
+        return ServerResponse.ok().body(productService.getAllProducts(pageable), ProductDto.class);
     }
 
     @Override
     public Mono<ServerResponse> saveProduct(ServerRequest request) {
 
-        ProductDto productDto = productService.saveProduct(request.bodyToMono(ProductDto.class).block());
+        Mono<UUID> id = productService.saveProduct(request.bodyToMono(ProductDto.class));
 
-        return ServerResponse.created(URI.create(productDto.getId().toString())).body(productDto, ProductDto.class);
+        return ServerResponse.created(URI.create(id.toString())).body(id, UUID.class);
     }
 
     @Override
     public Mono<ServerResponse> updateProduct(ServerRequest request) {
-        productService.updateProduct(request.bodyToMono(ProductDto.class).block());
-        return ServerResponse.noContent().build();
+        return productService.updateProduct(request.bodyToMono(ProductDto.class))
+                .flatMap((val) -> ServerResponse.noContent().build());
+    }
+
+    @Override
+    public Mono<ServerResponse> validateInventory(ServerRequest request) {
+        String upc = request.pathVariable("upc");
+        return ServerResponse.ok().body(productService.validateInventory(upc), UUID.class);
+    }
+
+    @Override
+    public Mono<ServerResponse> deleteProduct(ServerRequest request) {
+        UUID productId = UUID.fromString(request.pathVariable("productId"));
+        return productService.deleteProduct(productId)
+                .flatMap(val -> ServerResponse.noContent().build());
     }
 
 }

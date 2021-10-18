@@ -1,12 +1,16 @@
 package com.maz.store.product.services;
 
 import com.maz.store.model.product.ProductDto;
+import com.maz.store.product.domain.Category;
 import com.maz.store.product.domain.Product;
 import com.maz.store.product.repositories.ProductRepository;
 import com.maz.store.product.web.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.asn1.cms.OriginatorIdentifierOrKey;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,63 +20,61 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    ProductRepository productRepository;
-    ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Override
-    public ProductDto saveProduct(ProductDto productDto) {
+    public Mono<UUID> saveProduct(Mono<ProductDto> productDto) {
 
-        productDto.setId(null);
-
-        Product savedProduct = productRepository.save(productMapper.productDtoToProduct(productDto)).block();
-
-        return productMapper.productToProductDto(savedProduct);
+        return productDto
+                .map(product -> {
+                    product.setId(UUID.randomUUID());
+                    return productMapper.productDtoToProduct(product);
+                })
+                .flatMap(productRepository::save)
+                .map(product -> productMapper.productToProductDtoWithoutQOH(product).getId());
     }
 
     @Override
-    public ProductDto getProduct(UUID productId, Boolean getQOH) {
+    public Mono<ProductDto> getProduct(UUID productId, Boolean getQOH) {
+        return productRepository.findById(productId)
+                .map(productMapper::productToProductDto);
 
-        Optional<Product> optionalProduct = productRepository.findById(productId).blockOptional();
-
-        Product product = optionalProduct
-                .orElseThrow(() -> new RuntimeException("Product Not Found With Id: " + productId));
-
-        return getQOH ? productMapper.productToProductDto(product) : productMapper.productToProductDtoWithoutQOH(product);
-
-    }
-
-    @Override
-    public List<ProductDto> getAllProducts(Pageable pageable) {
-
-        return  productRepository.findAll()
-                .take(pageable.getPageSize())
-                .skip(pageable.getOffset())
-                .map(productMapper::productToProductDto)
-                .collectList().block();
 
     }
 
     @Override
-    public ProductDto updateProduct(ProductDto productDto) {
+    public Flux<ProductDto> getAllProducts(Pageable pageable) {
+        return productRepository.findAll()
+                .map(productMapper::productToProductDto);
+    }
 
-        Optional<Product> optionalProduct = productRepository.findById(productDto.getId()).blockOptional();
 
-        Product savedProduct = optionalProduct
-                .orElseThrow(() -> new RuntimeException("Product Not Found With Id: " + productDto.getId()));
+    @Override
+    public Mono<Void> updateProduct(Mono<ProductDto> productDto) {
 
-        Product product = productMapper.productDtoToProduct(productDto);
 
-        savedProduct.setCategory(product.getCategory());
-        savedProduct.setLabel(product.getLabel());
-        savedProduct.setCost(product.getCost());
+        return productDto
+                .flatMap(dto -> productRepository.findById(dto.getId())
+                        .flatMap(savedProduct -> {
+                            savedProduct.setCategory(Category.valueOf(dto.getCategory()));
+                            savedProduct.setLabel(dto.getLabel());
+                            savedProduct.setCost(dto.getCost());
+                            savedProduct.setUpc(dto.getUpc());
+                            return productRepository.save(savedProduct);
+                        }))
+                .then();
 
-        return productMapper.productToProductDto(productRepository.save(savedProduct).block());
     }
 
     @Override
-    public void deleteProduct(UUID productIt) {
+    public Mono<UUID> validateInventory(String upc) {
+        Mono<Product> product = productRepository.findByUpc(upc);
+        return product.map(Product::getId);
+    }
 
-        productRepository.deleteById(productIt).block();
-
+    @Override
+    public Mono<Void> deleteProduct(UUID productIt) {
+        return productRepository.deleteById(productIt);
     }
 }
